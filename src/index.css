@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap");
+
+html,
+body,
+#root,
+.app {
+  height: 100%;
+  width: 100%;
+  font-family: "Rubik", sans-serif;
+}
+.reactbtn {
+  position: relative;
+  /* Set the height of your container div */
+ 
+}
+
+.count {
+  
+  position: absolute;
+  top: -33px;
+  right: -116px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+
+}
+.Rchild{
+
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: -7px; /* Adjust the negative margin to control the overlap */
+  font-weight: bold;
+  color: white;
+}
+

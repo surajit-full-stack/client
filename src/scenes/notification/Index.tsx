@@ -10,20 +10,19 @@ import { theState } from "../../state";
 import { apiStore } from "../../state/api";
 import { PostNotification } from "../../Types";
 import { ReactionType, reactionIcon } from "../widgets/PostWidget";
+import moment from "moment";
 
 export default function Notifications() {
-  const { resetNotification, newNotification } = theState();
+  const { resetNotification, newNotification, following } = theState();
   const { notifications, getNotification } = apiStore();
   const [allnotification, setAllnotification] = React.useState<
     Array<PostNotification>
   >([]);
   React.useEffect(() => {
-    if (newNotification.length === 0) {
-      getNotification().then((data) => {
-        setAllnotification(data);
-      });
-    } else {
-      setAllnotification([...newNotification, ...notifications]);
+    getNotification(following).then((data) => {
+      setAllnotification(data);
+    });
+    if (newNotification.length !== 0) {
       resetNotification();
     }
   }, []);
@@ -37,19 +36,17 @@ export default function Notifications() {
       }}
     >
       {allnotification.map(
-        ({ senderName, type, caption }: PostNotification, ind) => (
+        ({ sourceUserName, type, caption, time,sourceDp }: PostNotification) => (
           <>
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                <Avatar alt="Remy Sharp" src={sourceDp} />
               </ListItemAvatar>
               <ListItemText
                 primary={
-                  type === "post"
-                    ? `${senderName} added a new post`
-                    : type === "react"
-                    ? `${senderName} reacted to  your post`
-                    : null
+                  type === "react"
+                    ? reactionIcon[caption as ReactionType]
+                    : caption
                 }
                 secondary={
                   <React.Fragment>
@@ -59,15 +56,29 @@ export default function Notifications() {
                       variant="body2"
                       color="text.primary"
                     >
+                      {sourceUserName}
+                      {` — `}
                       {type === "post"
-                        ? caption
+                        ? ` added a new post`
                         : type === "react"
-                        ? reactionIcon[caption as ReactionType]
+                        ? ` reacted to  your post`
+                        : type === "comment"
+                        ? ` commented on your post`
+                        : type === "reply"
+                        ? ` replied`
                         : null}
                     </Typography>
+                    <Typography
+                      sx={{ display: "block" }}
+                      component="span"
+                      variant="body2"
+                      color="text.secondary"
+                    > {moment(time).fromNow()}</Typography>
+                   
                   </React.Fragment>
                 }
               />
+             
             </ListItem>
             <Divider variant="inset" component="li" />
           </>

@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 
-import { IconButton } from "@mui/material";
+import { IconButton, SxProps } from "@mui/material";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
@@ -11,10 +11,12 @@ type DrawerProps = {
   side: Anchor;
   drawerChild: React.ReactNode;
   width?: number | string;
+
 };
 
 export default function DrawerComp({
   DrawerButton,
+
   side,
   drawerChild,
   width,
@@ -60,7 +62,11 @@ export default function DrawerComp({
   return (
     <div>
       <React.Fragment>
-        <IconButton onClick={toggleDrawer(side, true)} sx={{ p: "0.6rem" }}>
+        <IconButton
+          size="small"
+          onClick={toggleDrawer(side, true)}
+          sx={{ ml:'0.8rem' }}
+        >
           {DrawerButton}
         </IconButton>
         <Drawer

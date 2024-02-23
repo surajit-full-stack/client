@@ -7,14 +7,26 @@ import Avatar from "@mui/material/Avatar";
 import { reactionIcon } from "../scenes/widgets/PostWidget";
 import moment from "moment";
 import { Reactors } from "../Types";
+import { useEffect, useState } from "react";
+import { apiStore } from "../state/api";
 
-export default function RactorsTab({ data }: { data: Array<Reactors> }) {
+export default function RactorsTab({ postId }: { postId: number }) {
+  const [reactors, setReactors] = useState<Array<Reactors>>([]);
+  const { getReactors } = apiStore();
+
+  useEffect(() => {
+   
+    getReactors(postId).then((data) => {
+      setReactors(data);
+    });
+  }, [postId]);
+
   return (
     <List
       dense
       sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
     >
-      {data.map(({ profilePicture, type, userName, createdAt }) => {
+      {reactors.map(({ profilePicture, type, userName, createdAt }) => {
         return (
           <ListItem
             sx={{ p: 1 }}

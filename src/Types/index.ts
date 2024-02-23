@@ -51,10 +51,13 @@ export type CommentReactions = {
   createdAt: string;
 };
 export type PostNotification = {
-  type: string;
-  senderName: string;
-  senderId:number;
-  author_id?: number;
-  postId: number;
-  caption?:string;
-};
+  sourceUserId: number;
+  postId?:number;
+  type: string
+  sourceUserName: string;
+  caption?:string
+  dbkey: number,
+  time: Date,
+  sourceDp:string
+}
+

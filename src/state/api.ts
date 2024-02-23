@@ -3,6 +3,7 @@ import { http } from "../Axiox";
 import toast from "react-hot-toast";
 import { Comment, Follower, Post, PostNotification, Reactors } from "../Types";
 import { ReactionType } from "../scenes/widgets/PostWidget";
+import { serverUrl } from "../socket";
 
 type ApiStore = {
   commentsLoading: boolean;
@@ -15,7 +16,9 @@ type ApiStore = {
   followingCount: number;
   comments: Array<Comment>;
   feed: Array<Post>;
-  getNotification: () => Promise<Array<PostNotification>>;
+  getNotification: (
+    following: Array<number> | null
+  ) => Promise<Array<PostNotification>>;
   getPosts: (userName: string) => Promise<void>;
   addReactionPost: (
     postId: number,
@@ -29,7 +32,7 @@ type ApiStore = {
   follow: (userId: number, userName: string) => void;
   unfollow: (userId: number, userName: string) => void;
   getComments: (postId: number) => Promise<void>;
-  addComment: (postId: number, commentText: string) => void;
+  addComment: (postId: number, commentText: string,author_id:number) => void;
   editComment: (
     commentId: number,
     newComment: string,
@@ -44,7 +47,8 @@ type ApiStore = {
     CommentId: number,
     CommentText: string,
     replyTo: string,
-    postId: number
+    postId: number,
+    
   ) => Promise<void>;
   getReplies: (
     CommentId: number,
@@ -141,11 +145,11 @@ const store = (set: any) => ({
         set(() => ({ commentsLoading: false }));
       });
   },
-  addComment: (postId: number, commentText: string) => {
+  addComment: (postId: number, commentText: string, author_id: number) => {
     http
       .post(
         "add-comment/" + postId,
-        { CommentText: commentText },
+        { CommentText: commentText,author_id },
         { withCredentials: true }
       )
       .then(() => {
@@ -314,33 +318,24 @@ const store = (set: any) => ({
       return [];
     }
   },
-  getNotification: async () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        set(() => ({
-          notifications: [
-            {
-              type: "post",
-              senderName: "biky",
-              author_id: 312,
-              postId: 19,
-              caption: "nice day...",
-            },
-            { type: "react", senderName: "dj", author_id: 312, postId: 19,caption:'angry' },
-          ],
-        }));
-        resolve([
-          {
-            type: "post",
-            senderName: "biky",
-            author_id: 312,
-            postId: 19,
-            caption: "nice day...",
-          },
-          { type: "like", senderName: "dj", author_id: 312, postId: 19 },
-        ]);
-      }, 2000);
-    });
+  getNotification: async (following: Array<number> | null) => {
+    try {
+      let payload = following?.map((id) => "base:" + id);
+
+      const { data } = await http.post(
+        serverUrl + "/",
+        { groupIds: JSON.stringify(payload) },
+        { withCredentials: true }
+      );
+      const _notifications = data.data.map((it) => it.data);
+      console.log("resp.data.data", _notifications);
+      set(() => ({
+        notifications: _notifications,
+      }));
+      return _notifications;
+    } catch (error) {
+      throw error
+    }
   },
 });
 

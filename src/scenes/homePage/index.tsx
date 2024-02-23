@@ -28,7 +28,7 @@ const HomePage = () => {
     getFeed();
     getFollowers(userId);
   }, []);
-console.log('feed', feed)
+
   return (
     <Box>
       {" "}
@@ -53,7 +53,7 @@ console.log('feed', feed)
         {/**Actual Posts */}
 
         <Box
-          sx={{ boxShadow, borderRadius: 5 }}
+          sx={{  borderRadius: 5 }}
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
         >

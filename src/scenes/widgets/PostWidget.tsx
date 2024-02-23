@@ -3,6 +3,7 @@ import {
   Avatar,
   Box,
   CardHeader,
+  Divider,
   IconButton,
   OutlinedInput,
   Popover,
@@ -25,7 +26,6 @@ import CommentBody from "../../components/CommentBody";
 import ReactionTeam from "../../components/ReactionTeam";
 import { replyState } from "../../state/reply";
 import RactorsTab from "../../components/ReactorsTab";
-import { Reactors } from "../../Types";
 type PostWidget = {
   postId: number;
   name: string;
@@ -37,12 +37,13 @@ type PostWidget = {
   reaction_count: number;
   visibility: "public" | "private" | "follower";
   reactionType: ReactionType;
-  author_id:number;
+  author_id: number;
 };
 export type ReactionType = "wow" | "like" | "sad" | "angry" | "hate" | "love";
 type CommentTabProps = {
   postId: number;
   AuthorId: string;
+  author_id:number;
 };
 
 export const reactionIcon: Record<ReactionType, any> = {
@@ -54,7 +55,7 @@ export const reactionIcon: Record<ReactionType, any> = {
   hate: <>🤮</>,
 };
 export const reactions = Object.entries(reactionIcon);
-const medium = colorTokens.grey[400];
+
 const PostWidget = ({
   name,
   description,
@@ -66,13 +67,12 @@ const PostWidget = ({
   reaction_count,
   reactionType,
   postId,
-  author_id
+  author_id,
 }: PostWidget) => {
   const [myReact, setMyReact] = useState<ReactionType | null>(reactionType);
   const [postReactCount, setPostReactCount] = useState<number>(reaction_count);
-  const [impUser, setImpUser] = useState<string | null>(null);
 
-  const { addReactionPost, removeReactionPost, getIPreactor } = apiStore();
+  const { addReactionPost, removeReactionPost } = apiStore();
 
   //change number of likes
 
@@ -97,7 +97,7 @@ const PostWidget = ({
     }
     setMyReact(type);
     setPostReactCount((prev) => prev + 1);
-    addReactionPost(postId, type,author_id);
+    addReactionPost(postId, type, author_id);
     handleClose();
   };
 
@@ -122,19 +122,13 @@ const PostWidget = ({
     );
   };
 
-  const [reactors, setReactors] = useState<Array<Reactors>>([]);
-  const { getReactors } = apiStore();
   useEffect(() => {
-    getIPreactor(postId).then((userName:any) => {
-      if (postReactCount > 0 && !userName) {
-        return setImpUser("you");
-      }
-
-      setImpUser(userName);
-    });
-    getReactors(postId).then((data) => {
-      setReactors(data);
-    });
+    // getIPreactor(postId).then((userName:any) => {
+    //   if (postReactCount > 0 && !userName) {
+    //     return setImpUser("you");
+    //   }
+    //   setImpUser(userName);
+    // });
   }, [postReactCount]);
   return (
     <WidgetWrapper mb="2rem">
@@ -145,7 +139,7 @@ const PostWidget = ({
         withMenu
       />
       <Reactions />
-      <Typography sx={{ mt: "1rem" }}>{description}</Typography>
+      <Typography sx={{ my: "1rem", mx: "0.7rem" }}>{description}</Typography>
       {picturePath && (
         <img
           width="100%"
@@ -155,42 +149,35 @@ const PostWidget = ({
           src={picturePath}
         />
       )}
-      <DrawerComp
-        side="bottom"
-        drawerChild={<RactorsTab data={reactors} />}
-        DrawerButton={
-          <Typography color={medium} variant="subtitle1" sx={{ mx: "0.25rem" }}>
-            {postReactCount >= 2
-              ? `${impUser} & ${postReactCount - 1} others`
-              : postReactCount == 0
-              ? ""
-              : `${impUser} liked`}
-          </Typography>
-        }
-      />
+      <Divider />
 
-      <FlexBetween mt="0.25rem">
-        <FlexBetween gap="1rem">
-          {/**Likes section */}
-          <FlexBetween gap="0.3rem">
-            <IconButton
-              onClick={(e) => {
-                handleClick(e);
-              }}
-            >
-              {myReact ? reactionIcon[myReact] : <ThumbUpOffAltIcon />}
-            </IconButton>
-          </FlexBetween>
+      <Divider />
+      <FlexBetween>
+        {/**Likes section */}
+        <FlexBetween sx={{ height: 15 }}>
+          <IconButton
+            sx={{ py: 0 }}
+            onClick={(e) => {
+              handleClick(e);
+            }}
+          >
+            {myReact ? reactionIcon[myReact] : <ThumbUpOffAltIcon />}
+          </IconButton>
+          <DrawerComp
+            side="bottom"
+            drawerChild={<RactorsTab postId={postId} />}
+            DrawerButton={<>{postReactCount != 0 && postReactCount}</>}
+          />
+        </FlexBetween>
 
-          {/**Comment section */}
-          <FlexBetween>
-            <DrawerComp
-              side="bottom"
-              DrawerButton={<ChatBubbleOutlineOutlined />}
-              drawerChild={<CommentTab AuthorId={name} postId={postId} />}
-            />
-            <Typography>{comments_count}</Typography>
-          </FlexBetween>
+        {/**Comment section */}
+        <FlexBetween>
+          <DrawerComp
+            side="bottom"
+            DrawerButton={<ChatBubbleOutlineOutlined />}
+            drawerChild={<CommentTab AuthorId={name} author_id={author_id} postId={postId} />}
+          />
+          {comments_count}
         </FlexBetween>
 
         <IconButton>
@@ -202,7 +189,7 @@ const PostWidget = ({
   );
 };
 
-const CommentTab = ({ postId, AuthorId }: CommentTabProps) => {
+const CommentTab = ({ postId, AuthorId,author_id }: CommentTabProps) => {
   const { getComments, comments, commentsLoading, addReply } = apiStore();
   const { userData } = theState();
   const {
@@ -330,7 +317,7 @@ const CommentTab = ({ postId, AuthorId }: CommentTabProps) => {
 
                     setCmntText("");
                   } else {
-                    addComment(postId, cmntText);
+                    addComment(postId, cmntText, author_id );
                     setCmntText("");
                   }
                 }}

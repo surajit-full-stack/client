@@ -4,7 +4,8 @@ import toast from "react-hot-toast";
 import { Comment, Follower, Post, PostNotification, Reactors } from "../Types";
 import { ReactionType } from "../scenes/widgets/PostWidget";
 import { serverUrl } from "../socket";
-
+import { theState } from ".";
+import { useSocketStore } from "./socket";
 type ApiStore = {
   commentsLoading: boolean;
   posts: Array<Post>;
@@ -32,7 +33,7 @@ type ApiStore = {
   follow: (userId: number, userName: string) => void;
   unfollow: (userId: number, userName: string) => void;
   getComments: (postId: number) => Promise<void>;
-  addComment: (postId: number, commentText: string,author_id:number) => void;
+  addComment: (postId: number, commentText: string, author_id: number) => void;
   editComment: (
     commentId: number,
     newComment: string,
@@ -47,8 +48,7 @@ type ApiStore = {
     CommentId: number,
     CommentText: string,
     replyTo: string,
-    postId: number,
-    
+    postId: number
   ) => Promise<void>;
   getReplies: (
     CommentId: number,
@@ -119,6 +119,9 @@ const store = (set: any) => ({
       })
       .then((res) => {
         set(() => ({ followings: res.data, followingCount: res.data.length }));
+        theState
+          .getState()
+          .fetchFollowing(res.data.map((it: Follower) => it.userId));
       })
       .catch(() => {
         toast.error("Something went wrong!");
@@ -149,7 +152,7 @@ const store = (set: any) => ({
     http
       .post(
         "add-comment/" + postId,
-        { CommentText: commentText,author_id },
+        { CommentText: commentText, author_id },
         { withCredentials: true }
       )
       .then(() => {
@@ -273,6 +276,7 @@ const store = (set: any) => ({
         console.log("myUid", myUid);
         apiStore.getState().getFollowings(myUid);
         apiStore.getState().getFollowersSuggestion();
+        useSocketStore.getState().subscribeUser(userId)
         toast("you are now following " + userName);
       });
   },
@@ -284,6 +288,7 @@ const store = (set: any) => ({
         console.log("myUid", myUid);
         apiStore.getState().getFollowings(myUid);
         apiStore.getState().getFollowersSuggestion();
+        useSocketStore.getState().unSubscribeUser(userId);
         toast(" Un-following " + userName);
       });
   },
@@ -327,14 +332,14 @@ const store = (set: any) => ({
         { groupIds: JSON.stringify(payload) },
         { withCredentials: true }
       );
-      const _notifications = data.data.map((it) => it.data);
+      const _notifications = data.data.map((it: any) => it.data);
       console.log("resp.data.data", _notifications);
       set(() => ({
         notifications: _notifications,
       }));
       return _notifications;
     } catch (error) {
-      throw error
+      throw error;
     }
   },
 });

@@ -32,7 +32,10 @@ const store = (set: any) => ({
   theme: "dark",
   newNotification: [],
   following: null,
-  fetchFollowing: (following: Array<number>) => set(() => ({ following })),
+  fetchFollowing: (following: Array<number>) => {
+    console.log('up following')
+    set(() => ({ following }));
+  },
   pushNotification: (newNoti: Array<PostNotification>) =>
     set((state: any) => ({
       newNotification: [...state.newNotification, ...newNoti],

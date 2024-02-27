@@ -27,7 +27,7 @@ export default function Followings() {
             <Button
               onClick={(e) => {
                 e.stopPropagation();
-                unfollow(it.userId, it.userName);
+                unfollow(it.userId, it.userName)
               }}
               size="small"
             >

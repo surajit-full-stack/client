@@ -36,7 +36,13 @@ export default function Notifications() {
       }}
     >
       {allnotification.map(
-        ({ sourceUserName, type, caption, time,sourceDp }: PostNotification) => (
+        ({
+          sourceUserName,
+          type,
+          caption,
+          time,
+          sourceDp,
+        }: PostNotification) => (
           <>
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
@@ -66,6 +72,8 @@ export default function Notifications() {
                         ? ` commented on your post`
                         : type === "reply"
                         ? ` replied`
+                        : type === "following"
+                        ? ` started follwing you`
                         : null}
                     </Typography>
                     <Typography
@@ -73,12 +81,13 @@ export default function Notifications() {
                       component="span"
                       variant="body2"
                       color="text.secondary"
-                    > {moment(time).fromNow()}</Typography>
-                   
+                    >
+                      {" "}
+                      {moment(time).fromNow()}
+                    </Typography>
                   </React.Fragment>
                 }
               />
-             
             </ListItem>
             <Divider variant="inset" component="li" />
           </>

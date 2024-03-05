@@ -25,15 +25,17 @@ type Store = {
   pushNotification: (newNoti: Array<PostNotification>) => void;
   resetNotification: () => void;
 };
-
-const store = (set: any) => ({
+const INITIAL = {
   userData: {} as UserData,
   auth: false,
   theme: "dark",
   newNotification: [],
   following: null,
+};
+const store = (set: any) => ({
+  ...INITIAL,
   fetchFollowing: (following: Array<number>) => {
-    console.log('up following')
+    console.log("up following");
     set(() => ({ following }));
   },
   pushNotification: (newNoti: Array<PostNotification>) =>
@@ -44,11 +46,17 @@ const store = (set: any) => ({
   changeTheme: () =>
     set((state: any) => ({ theme: state.theme === "dark" ? "light" : "dark" })),
   loggedIn: () => set(() => ({ auth: true })),
-  loggedOut: () => set(() => ({ auth: false })),
+  loggedOut: () => set(() => ({ ...INITIAL })),
   setUserState: (data: any) => set(() => ({ userData: data })),
 });
 const persistConfig = {
   name: "app-theme", // name of the item in the storage (must be unique) // (optional) by default, 'localStorage' is used
 };
-
-export const theState = create<Store>(persist(store, persistConfig));
+type PersistedStore = Store & {
+  get: (key: string) => any;
+  set: (key: string, value: any) => void;
+  remove: (key: string) => void;
+};
+export const theState = create<PersistedStore>(
+  persist(store, persistConfig) as any
+);

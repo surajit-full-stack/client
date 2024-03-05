@@ -14,12 +14,12 @@ import moment from "moment";
 
 export default function Notifications() {
   const { resetNotification, newNotification, following } = theState();
-  const { notifications, getNotification } = apiStore();
+  const {  getNotification } = apiStore();
   const [allnotification, setAllnotification] = React.useState<
     Array<PostNotification>
   >([]);
   React.useEffect(() => {
-    getNotification(following).then((data) => {
+    getNotification(following).then((data:any) => {
       setAllnotification(data);
     });
     if (newNotification.length !== 0) {

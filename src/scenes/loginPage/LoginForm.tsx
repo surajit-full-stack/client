@@ -1,6 +1,10 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import AuthWrapper from ".";
 import AutoType from "../../Hooks/AutoType";
 import toast, { Toaster } from "react-hot-toast";
@@ -15,6 +19,10 @@ const LoginForm = () => {
     userName: null,
     password: null,
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
   const signin = (e: any) => {
     e.preventDefault();
     if (!userData.userName || !userData.password) {
@@ -27,7 +35,7 @@ const LoginForm = () => {
       })
       .then((res) => {
         toast.success("Successfully logged in!");
-        const { userData,accessToken } = res.data;
+        const { userData } = res.data;
 
         setUserState(userData);
         setTimeout(() => {
@@ -62,7 +70,7 @@ const LoginForm = () => {
                   return { ...prev, userName: e.target.value };
                 })
               }
-              id="user-name"
+              id="userName"
               name="userName"
               label={<AutoType text={text1} />}
               variant="standard"
@@ -70,6 +78,7 @@ const LoginForm = () => {
           </Box>
           <Box sx={{ m: 3 }}>
             <TextField
+            
               onChange={(e) =>
                 setUserData((prev: any) => {
                   return { ...prev, password: e.target.value };
@@ -81,7 +90,21 @@ const LoginForm = () => {
                 }
               }}
               id="password"
+              type={showPassword?"text":"password"}
               name="password"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleTogglePasswordVisibility}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
               label={<AutoType text={text2} />}
               variant="standard"
             />

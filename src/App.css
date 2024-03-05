@@ -4,6 +4,11 @@
   padding: 2rem;
   text-align: center;
 }
+/* Override autofill styles */
+input:-internal-autofill-selected {
+  background-color: red !important;
+  color: black !important;
+}
 
 .logo {
   height: 6em;

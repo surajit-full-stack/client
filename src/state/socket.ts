@@ -11,7 +11,7 @@ interface SocketState {
   connect: () => void;
   disconnect: () => void;
   unSubscribeUser: (followingId: number) => void;
-  subscribeUser:(followingId: number) => void;
+  subscribeUser: (followingId: number) => void;
 }
 const port = 4000 + Math.floor(Math.random() * 4);
 
@@ -24,24 +24,26 @@ export const useSocketStore = create<SocketState>((set, get) => ({
     const userId = theState.getState().userData.userId;
     const socket = io(serverUrl);
     set({ socket });
-
+    console.log("following", following);
     if (socket && !socket.connected) {
       socket.on("connect", () => {
         if (!following) {
+          
           http
             .get("get-following/" + userId, {
               withCredentials: true,
             })
             .then(({ data }) => {
               const f = data.map((it: { userId: number }) => it.userId);
-
+              console.log("fuck", f);
               const userId = theState.getState().userData.userId;
-              socket.emit("join-room", { f, userId });
+              socket.emit("join-room", { following:f, userId });
             })
             .catch((error) => {
               console.error("Error fetching following:", error);
             });
         } else {
+
           socket.emit("join-room", { following, userId });
         }
       });
@@ -76,7 +78,7 @@ export const useSocketStore = create<SocketState>((set, get) => ({
   subscribeUser: (followingId: number) => {
     const { socket } = get();
     const userId = theState.getState().userData.userId;
-    socket?.emit("join-room", { following:[followingId], userId });
+    socket?.emit("join-room", { following: [followingId], userId });
   },
   disconnect: () => {
     const { socket } = get();

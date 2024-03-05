@@ -4,7 +4,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { theState } from "../state";
 import { Avatar } from "@mui/material";
@@ -64,6 +64,7 @@ const SideBarList = () => {
           }).then((result) => {
             if (result.isConfirmed) {
               logout().then(() => {
+                localStorage.clear();
                 loggedOut();
                 setTimeout(() => {
                   navigate("/log-in");

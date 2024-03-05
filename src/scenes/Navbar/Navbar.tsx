@@ -21,6 +21,8 @@ import SideBarList from "../../components/SideBarList";
 import AutocompleteSearch from "./Autocomplete";
 import Notifications from "../notification/Index";
 import { useNavigate } from "react-router-dom";
+import { http } from "../../Axiox";
+import toast from "react-hot-toast";
 
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -47,7 +49,29 @@ export default function PrimarySearchAppBar() {
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
+  const redirectChat = () => {
+    if(sessionStorage.getItem("M1xKNf8NIdOND")){
+      window.open(
+        `${import.meta.env.VITE_CHAT_UI_HOST}/conversation`,
+        "_blank"
+      );
+    }else{
+      http
+      .get("auth/chat-token", { withCredentials: true })
+      .then((res) => {
+        sessionStorage.setItem("M1xKNf8NIdOND", "1");
+        window.open(
+          `${import.meta.env.VITE_CHAT_UI_HOST}/${res.data.token}`,
+          "_blank"
+        );
+      })
+      .catch((err) => {
+        console.log("err", err);
+        toast.error("Un-authorized");
+      });
+    }
+ 
+  };
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -87,7 +111,7 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={redirectChat}>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
             <MailIcon />

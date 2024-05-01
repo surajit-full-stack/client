@@ -45,8 +45,8 @@ const LoginForm = () => {
         }, 1000);
       })
       .catch((err) => {
-        //console.log("err", err);
-        toast.error(err.response?.data || err.message);
+        console.log("err", err);
+        toast.error(err.message);
       });
   };
   return (
@@ -78,7 +78,6 @@ const LoginForm = () => {
           </Box>
           <Box sx={{ m: 3 }}>
             <TextField
-            
               onChange={(e) =>
                 setUserData((prev: any) => {
                   return { ...prev, password: e.target.value };
@@ -90,7 +89,7 @@ const LoginForm = () => {
                 }
               }}
               id="password"
-              type={showPassword?"text":"password"}
+              type={showPassword ? "text" : "password"}
               name="password"
               InputProps={{
                 endAdornment: (

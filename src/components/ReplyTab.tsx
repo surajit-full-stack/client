@@ -38,6 +38,7 @@ const ReplyTab = ({ RootCommentId, AuthorId, postId }: Props) => {
           replyTo,
           type,
           CommentID,
+          reactionCount
         }) => {
           return (
             <Box sx={{ marginLeft: 2, marginTop: 0, display: "flex" }}>
@@ -64,6 +65,7 @@ const ReplyTab = ({ RootCommentId, AuthorId, postId }: Props) => {
                   replyTo,
                   postId,
                   type,
+                  reactionCount
                 }}
               />
             </Box>

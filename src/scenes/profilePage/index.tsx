@@ -24,7 +24,7 @@ const ProfilePage = () => {
   } = theState();
   const { getPosts } = apiStore();
   const { palette } = useTheme();
-  const { getFollowers, followers, followerCount } = apiStore();
+  const { getFollowers, followers } = apiStore();
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
   const [userData, setUserData] = useState<UserData>({
     userName: "",
@@ -54,6 +54,7 @@ const ProfilePage = () => {
       })
       .catch((err) => {
         //console.log("err", err);
+        alert(err.message)
       });
   };
   const { posts } = apiStore();

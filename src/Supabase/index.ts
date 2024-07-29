@@ -14,7 +14,7 @@ export const uploadImage = async (
       .from("socio_bucket")
       .upload("Posts/" + file.name, file);
     if (error) {
-      if (error.error == "Duplicate")
+      if (error.message == "Duplicate")
         callback(
           baseUrl + "/storage/v1/object/public/socio_bucket/Posts/" + file.name
         );

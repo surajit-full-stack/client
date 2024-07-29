@@ -8,12 +8,11 @@ import { colorTokens } from "../theme";
 import DrawerComp from "./Drawer";
 import ViewLIst from "./ViewLIst";
 
-
 type FriendCardProps = {
   name: string;
   subtitle: string;
   userPicturePath: string;
-  withMenu?:boolean
+  withMenu?: boolean;
 };
 
 /** Contains top part of the post */
@@ -21,13 +20,13 @@ const Friend = ({
   name,
   subtitle,
   userPicturePath,
-  withMenu=true
+  withMenu = true,
 }: FriendCardProps) => {
   const navigate = useNavigate();
   const { palette } = useTheme();
   const main = colorTokens.grey[500];
   const medium = colorTokens.grey[400];
-  const isSelf = false
+  const isSelf = false;
 
   return (
     <FlexBetween>
@@ -37,7 +36,7 @@ const Friend = ({
         <Box
           onClick={() => {
             navigate(`/profile/${name}`);
-          //refresh the page from when going into user prof and then going into another prof
+            //refresh the page from when going into user prof and then going into another prof
           }}
         >
           {/**Name */}
@@ -61,7 +60,13 @@ const Friend = ({
         </Box>
         {/**Friend button */}
       </FlexBetween>
-      {!isSelf && withMenu? <DrawerComp ListComp={<ViewLIst/>} DrawerListComp={<MoreVertIcon />} side="bottom" />:null}
+      {!isSelf && withMenu ? (
+        <DrawerComp
+          drawerChild={<ViewLIst />}
+          DrawerButton={<MoreVertIcon />}
+          side="bottom"
+        />
+      ) : null}
     </FlexBetween>
   );
 };

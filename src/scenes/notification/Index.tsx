@@ -7,7 +7,6 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import { theState } from "../../state";
-import { apiStore } from "../../state/api";
 import { PostNotification } from "../../Types";
 import { ReactionType, reactionIcon } from "../widgets/PostWidget";
 import moment from "moment";

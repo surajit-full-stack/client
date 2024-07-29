@@ -15,7 +15,6 @@ const SideBar = () => {
       <Box sx={{ m: 2 }}>
         <Friend
         withMenu={false}
-          friendId={userData.userName}
           name={userData.userName}
           subtitle=""
           userPicturePath={userData.profilePicture}

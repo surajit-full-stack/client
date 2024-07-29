@@ -14,7 +14,6 @@ import FlexBetween from "../../components/FlexBetween";
 import Friend from "../../components/Friend";
 import WidgetWrapper from "../../components/WidgetWrapper";
 import { RefObject, useEffect, useRef, useState } from "react";
-import { colorTokens } from "../../theme";
 import moment from "moment";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";

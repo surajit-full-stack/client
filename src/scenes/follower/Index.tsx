@@ -15,6 +15,7 @@ export default function Index() {
   const [value, setValue] = React.useState("1");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    event.preventDefault();
     setValue(newValue);
   };
   const { getFollowers, getFollowings, getFollowersSuggestion } = apiStore();

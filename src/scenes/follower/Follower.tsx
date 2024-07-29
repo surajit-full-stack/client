@@ -4,10 +4,10 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ImageIcon from "@mui/icons-material/Image";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { apiStore } from "../../state/api";
 import { useNavigate } from "react-router-dom";
-import moment from "moment";
+
 
 
 export default function Followers() {
@@ -27,7 +27,7 @@ export default function Followers() {
             </ListItemAvatar>
             <ListItemText
               primary={it.userName}
-              secondary={moment(it.moment).fromNow()}
+              // secondary={moment(it.moment).fromNow()}
             />
           </ListItem>
         ))}

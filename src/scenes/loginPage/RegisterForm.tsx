@@ -74,7 +74,7 @@ const RegisterForm = () => {
         navigate("/home");
       })
       .catch((err) => {
-        //console.log("err", err);
+        alert(err.message);
       });
   };
   return (
@@ -162,9 +162,8 @@ const Inputs = ({
           <TextField
             value={data}
             onChange={(event) => {
-             
               if (
-                event.target.value.charAt(event.target.value.length-1) === " "
+                event.target.value.charAt(event.target.value.length - 1) === " "
               ) {
                 toast.error("empty space is not allowed!");
               } else setData(event.target.value);

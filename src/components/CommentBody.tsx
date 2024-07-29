@@ -148,11 +148,13 @@ const CommentBody = ({
       if (it.type == "wow") highlightReaction.wow++;
     });
     let arr = Object.entries(highlightReaction)
+      .map(([key, value]) => [key, value] as [ReactionType, number])
       .sort((a, b) => {
         return b[1] - a[1];
       })
       .filter((it) => it[1] != 0)
       .slice(0, 3);
+
     setHlReaction(arr);
   }, [reactionData]);
 
@@ -210,7 +212,7 @@ const CommentBody = ({
             sx={{
               padding: 2,
               width: "13rem",
-              
+
               mr: 5,
             }}
             elevation={glitering}
@@ -314,9 +316,11 @@ const CommentBody = ({
 
                   <DrawerComp
                     DrawerButton={
-                      <span style={{ fontSize: 15 }}>{reactionCount>0?reactionCount:null}</span>
+                      <span style={{ fontSize: 15 }}>
+                        {reactionCount > 0 ? reactionCount : null}
+                      </span>
                     }
-                    drawerChild={<RactorsTab data={reactionData} />}
+                    drawerChild={<RactorsTab postId={postId} />}
                     side="bottom"
                   />
                 </div>

@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 interface User {
   userName: string;
-  profilePicture:string;
+  profilePicture: string;
   userId: number;
 }
 
@@ -117,28 +117,32 @@ export default function AutocompleteSearch() {
               value={value}
               onChange={(e) => {
                 setValue(e.target.value);
-                if (e.nativeEvent.inputType !== "deleteContentBackward")
+                const nativeEvent = e.nativeEvent as InputEvent;
+                if (nativeEvent.inputType !== "deleteContentBackward") {
                   searchName(e.target.value);
+                }
               }}
               placeholder="Search…"
+              color="primary"
+              size="small"
             />
           </div>
         )}
         renderOption={(props, option) => (
-            <li {...props}>
-              <img
-                src={option.n} // Replace with the actual property containing the image URL
-                alt={`Avatar of ${option.userName}`}
-                style={{
-                  marginRight: '10px', // Adjust the styling as needed
-                  width: '20px', // Adjust the styling as needed
-                  height: '20px', // Adjust the styling as needed
-                  borderRadius: '50%', // Adjust the styling as needed
-                }}
-              />
-              {option.userName}
-            </li>
-          )}
+          <li {...props}>
+            <img
+              src={option.profilePicture} // Replace with the actual property containing the image URL
+              alt={`Avatar of ${option.userName}`}
+              style={{
+                marginRight: "10px", // Adjust the styling as needed
+                width: "20px", // Adjust the styling as needed
+                height: "20px", // Adjust the styling as needed
+                borderRadius: "50%", // Adjust the styling as needed
+              }}
+            />
+            {option.userName}
+          </li>
+        )}
       />
     </Search>
   );

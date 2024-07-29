@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 
-import { IconButton, SxProps } from "@mui/material";
+import { IconButton } from "@mui/material";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
@@ -16,7 +16,6 @@ type DrawerProps = {
 
 export default function DrawerComp({
   DrawerButton,
-
   side,
   drawerChild,
   width,

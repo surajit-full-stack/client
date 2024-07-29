@@ -85,7 +85,7 @@ export default function AutocompleteSearch() {
       setOptions([]);
     }
   }, [open]);
-  console.log("options", options, open, loading);
+
   return (
     <Search>
       <SearchIconWrapper>

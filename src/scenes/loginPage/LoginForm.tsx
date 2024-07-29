@@ -45,7 +45,7 @@ const LoginForm = () => {
         }, 1000);
       })
       .catch((err) => {
-        console.log("err", err);
+    
         toast.error(err.message);
       });
   };

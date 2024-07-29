@@ -13,20 +13,19 @@ import { ReactionType, reactionIcon } from "../widgets/PostWidget";
 import moment from "moment";
 
 export default function Notifications() {
-  const { resetNotification, newNotification, following } = theState();
-  const {  getNotification } = apiStore();
-  const [allnotification, setAllnotification] = React.useState<
-    Array<PostNotification>
-  >([]);
+  const { resetNotification, newNotification, allnotification } = theState();
+  // const { getNotification } = apiStore();
+
   React.useEffect(() => {
-    getNotification(following).then((data:any) => {
-      setAllnotification(data);
-    });
+    // getNotification(following).then((data: any) => {
+    //   setAllnotification(data);
+    // });
+
     if (newNotification.length !== 0) {
       resetNotification();
     }
   }, []);
-  console.log("allnotification", allnotification);
+  console.log("allnotification", newNotification);
   return (
     <List
       sx={{

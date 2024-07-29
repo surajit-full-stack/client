@@ -18,6 +18,7 @@ type Store = {
   following: Array<number> | null;
   fetchFollowing: (following: Array<number>) => void;
   newNotification: Array<PostNotification>;
+  allnotification: Array<PostNotification>;
   userData: UserData;
   loggedIn: () => void;
   loggedOut: () => void;
@@ -30,6 +31,7 @@ const INITIAL = {
   auth: false,
   theme: "dark",
   newNotification: [],
+  allnotification: [],
   following: null,
 };
 const store = (set: any) => ({
@@ -41,6 +43,7 @@ const store = (set: any) => ({
   pushNotification: (newNoti: Array<PostNotification>) =>
     set((state: any) => ({
       newNotification: [...state.newNotification, ...newNoti],
+      allnotification: [...state.allnotification, ...newNoti],
     })),
   resetNotification: () => set(() => ({ newNotification: [] })),
   changeTheme: () =>

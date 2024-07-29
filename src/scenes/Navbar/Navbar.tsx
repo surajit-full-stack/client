@@ -50,7 +50,7 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
   const redirectChat = () => {
-    if(localStorage.getItem("M1xKNf8NIdOND")){
+    if(sessionStorage.getItem("M1xKNf8NIdOND")){
       window.open(
         `${import.meta.env.VITE_CHAT_UI_HOST}/conversation`,
         "_blank"
@@ -59,7 +59,7 @@ export default function PrimarySearchAppBar() {
       http
       .get("auth/chat-token", { withCredentials: true })
       .then((res) => {
-        localStorage.setItem("M1xKNf8NIdOND", "1");
+        sessionStorage.setItem("M1xKNf8NIdOND", "1");
         window.open(
           `${import.meta.env.VITE_CHAT_UI_HOST}/${res.data.token}`,
           "_blank"

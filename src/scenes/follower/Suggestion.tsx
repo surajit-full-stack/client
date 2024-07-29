@@ -31,7 +31,7 @@ export const Suggestion = () => {
             <Button
               onClick={(e) => {
                 e.stopPropagation();
-                console.log("d");
+             
                 follow(it.userId, it.userName);
               }}
               size="small"

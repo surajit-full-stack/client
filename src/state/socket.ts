@@ -28,22 +28,20 @@ export const useSocketStore = create<SocketState>((set, get) => ({
     if (socket && !socket.connected) {
       socket.on("connect", () => {
         if (!following) {
-          
           http
             .get("get-following/" + userId, {
               withCredentials: true,
             })
             .then(({ data }) => {
               const f = data.map((it: { userId: number }) => it.userId);
-              console.log("fuck", f);
+              
               const userId = theState.getState().userData.userId;
-              socket.emit("join-room", { following:f, userId });
+              socket.emit("join-room", { following: f, userId });
             })
             .catch((error) => {
               console.error("Error fetching following:", error);
             });
         } else {
-
           socket.emit("join-room", { following, userId });
         }
       });
@@ -54,7 +52,7 @@ export const useSocketStore = create<SocketState>((set, get) => ({
       socket.on(
         "notification",
         ({ notification }: { notification: Array<PostNotification> }) => {
-          console.log("new notification");
+          console.log("new notification",notification);
 
           theState.getState().pushNotification(notification);
           apiStore.getState().getNotification(following);

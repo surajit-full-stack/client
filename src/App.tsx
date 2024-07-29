@@ -11,23 +11,15 @@ import RegisterForm from "./scenes/loginPage/RegisterForm";
 import LoginForm from "./scenes/loginPage/LoginForm";
 import Followers from "./scenes/follower/Index";
 
-
 import Notifications from "./scenes/notification/Index";
 
 function App() {
- 
-  const {
-    theme,
-    auth
-    
-  } = theState();
+  const { theme, auth } = theState();
   const Ctheme = createTheme({
     palette: {
       mode: theme,
     },
   });
-
-
 
   return (
     <div className="app">
